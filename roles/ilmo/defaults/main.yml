@@ -1,0 +1,14 @@
+---
+ilmo_web_service_name: "ilmo-{{ilmo_instance_name_normalized}}.service"
+
+ilmo_enabled: true
+
+ilmo_user: "ilmo-{{ilmo_instance_name_normalized}}"
+ilmo_group: "{{ ilmo_user_username }}"
+ilmo_config_path: "/etc/ilmo-{{ilmo_instance_name_normalized}}"
+ilmo_base_path: "/var/ilmo-{{ilmo_instance_name_normalized}}"
+ilmo_venv_path: "{{  ilmo_base_path }}/.venv"
+ilmo_data_path: "{{  ilmo_base_path }}"
+ilmo_venv_command: "/usr/bin/python3 -m venv"
+
+ilmo_port: 4566

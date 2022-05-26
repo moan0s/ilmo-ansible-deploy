@@ -1,0 +1,18 @@
+[Unit]
+Description=ILMO web service
+After=network.target
+
+[Service]
+User={{ ilmo-user }}
+Group= {{ ilmo-group }}
+Environment="VIRTUAL_ENV=/var/ilmo/venv"
+Environment="PATH={{ ilmo_venv_path }}/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart={{ ilmo_venv_path }}/bin/gunicorn ilmo.wsgi \
+                      --name ilmo-{{ ilmo_instance_name_normalized}}  --workers 5 \
+                      --max-requests 1200  --max-requests-jitter 50 \
+                      --log-level=info --bind=127.0.0.1:{{ ilmo_port }}
+WorkingDirectory={{ ilmo_base_path }}
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

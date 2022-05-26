@@ -1,0 +1,95 @@
+---
+
+- set_fact:
+    ilmo_requires_restart: false
+
+- name: Create group
+  group:
+    name: "{{ ilmo_group }}"
+    state: present
+
+- name: Create user
+  user:
+    name: "{{ ilmo_user }}"
+    group: "{{ ilmo_group }}"
+    create_home: yes
+    home: "{{ ilmo_base_path }}"
+    shell: "/bin/bash"
+
+- name: Ensure ilmo paths exist
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    mode: 0750
+    owner: "{{ ilmo_user }}"
+    group: "{{ ilmo_group }}"
+  with_items:
+    - {path: "{{ ilmo_config_path }}", when: true}
+    - {path: "{{ ilmo_data_path }}", when: true}
+  when: "item.when|bool"
+
+- name: Ensure ilmo config installed
+  template:
+    src: "{{ role_path }}/templates/ilmo.cfg.j2"
+    dest: "{{ ilmo_config_path }}/ilmo.cfg"
+    mode: 0644
+    owner: "{{ ilmo_user }}"
+    group: "{{ ilmo_group }}"
+
+- name: Ensure ilmo service installed
+  template:
+    src: "{{ role_path }}/templates/systemd/ilmo-web.service.j2"
+    dest: "{{ ilmo_systemd_path }}/{{ilmo_web_service_name}}"
+    mode: 0644
+  register: ilmo_systemd_service_result
+
+- name: Ensure pip is on the latest version
+  pip:
+    name: "pip"
+    state: "latest"
+    virtualenv: "{{ ilmo_venv_path }}"
+    virtualenv_command: "{{ ilmo_venv_command }}"
+  become: true
+  become_user: "{{ ilmo_user }}"
+
+- name: Install gunicorn in virtualenv
+  pip:
+    name: "gunicorn"
+    virtualenv: "{{ ilmo_venv_path }}"
+    virtualenv_command: "{{ ilmo_venv_command }}"
+  become: yes
+  become_user: "{{ ilmo_user }}"
+
+- name: Clone ilmo repository
+  git:
+    repo: https://github.com/moan0s/ILMO2.git
+    dest: "{{ ilmo_base_path }}/ILMO"
+    clone: yes
+    update: yes
+    version: main
+
+- name: Install specified python requirements
+  pip:
+    virtualenv: "{{ ilmo_venv_path }}"
+    virtualenv_command: "{{ ilmo_venv_command }}"
+    requirements: "{{ ilmo_base_path }}ILMO/requirements.txt"
+  become: yes
+  become_user: "{{ ilmo_user }}"
+- name: Install ilmo
+  pip:
+    virtualenv: "{{ ilmo_venv_path }}"
+    virtualenv_command: "{{ ilmo_venv_command }}"
+    name: "{{ ilmo_base_path }}ILMO/"
+  become: yes
+  become_user: "{{ ilmo_user }}"
+
+- name: Ensure systemd reloaded after ilmo service installation
+  service:
+    daemon_reload: true
+  when: "ilmo_systemd_service_result.changed|bool"
+
+- name: ilmo service restarted, if necessary
+  service:
+    name: "matrix-bot-ilmo.service"
+    state: restarted
+  when: "ilmo_requires_restart|bool"

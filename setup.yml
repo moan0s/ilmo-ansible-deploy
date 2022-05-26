@@ -1,0 +1,7 @@
+---
+- name: "Set up a IlMO instance"
+  hosts: "{{ target if target is defined else 'ilmo_servers' }}"
+  become: true
+
+  roles:
+    - ilmo
