@@ -3,6 +3,14 @@
 ILMO is a webapp to manage a library, especially books, other material, users, emails and opening hours.
 This ansible playbook should help you set up an instance.
 
+# Troubleshooting
+
+```
+fatal: [hyteck]: FAILED! => changed=false 
+  cmd: /usr/bin/git ls-remote https://github.com/moan0s/ILMO2.git -h refs/heads/main
+```
+
+
 # Using the software
 
 This software is Open-Source so you are invited to use it for free. But perhaps you need some help to adjust the software to your library or want some new features? Feel free to contact me!

@@ -1,5 +1,1 @@
 ---
-
-- set_fact:
-    systemd_services_list: "{{ systemd_services_list + ['{{ ilmo_web_service_name }}'] }}"
-  when: ilmo_enabled|bool

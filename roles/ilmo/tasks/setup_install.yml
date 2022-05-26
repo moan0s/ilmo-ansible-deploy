@@ -36,10 +36,11 @@
     owner: "{{ ilmo_user }}"
     group: "{{ ilmo_group }}"
 
+
 - name: Ensure ilmo service installed
   template:
     src: "{{ role_path }}/templates/systemd/ilmo-web.service.j2"
-    dest: "{{ ilmo_systemd_path }}/{{ilmo_web_service_name}}"
+    dest: "{{ ilmo_systemd_path }}/{{ ilmo_web_service_name }}"
     mode: 0644
   register: ilmo_systemd_service_result
 
@@ -52,34 +53,34 @@
   become: true
   become_user: "{{ ilmo_user }}"
 
-- name: Install gunicorn in virtualenv
+- name: Install gunicorn and wheel in virtualenv
   pip:
-    name: "gunicorn"
+    name: ["gunicorn", "wheel"]
     virtualenv: "{{ ilmo_venv_path }}"
     virtualenv_command: "{{ ilmo_venv_command }}"
   become: yes
   become_user: "{{ ilmo_user }}"
 
-- name: Clone ilmo repository
-  git:
-    repo: https://github.com/moan0s/ILMO2.git
-    dest: "{{ ilmo_base_path }}/ILMO"
-    clone: yes
-    update: yes
+- name: Clone ILMO
+  ansible.builtin.git:
+    repo: "https://github.com/moan0s/ILMO2.git"
+    dest: "/var/ilmo-staging/ILMO"
     version: main
+
 
 - name: Install specified python requirements
   pip:
     virtualenv: "{{ ilmo_venv_path }}"
     virtualenv_command: "{{ ilmo_venv_command }}"
-    requirements: "{{ ilmo_base_path }}ILMO/requirements.txt"
+    requirements: "{{ ilmo_base_path }}/ILMO/src/requirements.txt"
   become: yes
   become_user: "{{ ilmo_user }}"
+
 - name: Install ilmo
   pip:
     virtualenv: "{{ ilmo_venv_path }}"
     virtualenv_command: "{{ ilmo_venv_command }}"
-    name: "{{ ilmo_base_path }}ILMO/"
+    name: "{{ ilmo_base_path }}/ILMO/src/"
   become: yes
   become_user: "{{ ilmo_user }}"
 
