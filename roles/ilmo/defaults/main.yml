@@ -13,3 +13,4 @@ ilmo_venv_command: "/usr/bin/python3 -m venv"
 ilmo_systemd_path: "/etc/systemd/system"
 
 ilmo_port: 4566
+ilmo_branch: main

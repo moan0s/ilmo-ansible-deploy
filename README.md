@@ -9,7 +9,11 @@ This ansible playbook should help you set up an instance.
 fatal: [hyteck]: FAILED! => changed=false 
   cmd: /usr/bin/git ls-remote https://github.com/moan0s/ILMO2.git -h refs/heads/main
 ```
-
+can be solved by 
+```
+# sudo su ilmo-staging
+$ git clone https://github.com/moan0s/ILMO2
+```
 
 # Using the software
 

@@ -65,8 +65,9 @@
   ansible.builtin.git:
     repo: "https://github.com/moan0s/ILMO2.git"
     dest: "/var/ilmo-staging/ILMO"
-    version: main
-
+    version: "{{ ilmo_branch }}"
+  become: yes
+  become_user: "{{ ilmo_user }}"
 
 - name: Install specified python requirements
   pip:
