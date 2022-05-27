@@ -13,7 +13,7 @@
   args:
     chdir: "{{ ilmo_base_path }}"
   environment:
-    PRETIX_CONFIG_FILE: "{{ ilmo_config_path }}/ilmo.cfg"
+    ILMO_CONFIG_FILE: "{{ ilmo_config_path }}/ilmo.cfg"
   become: yes
   become_user: "{{ ilmo_user }}"
 

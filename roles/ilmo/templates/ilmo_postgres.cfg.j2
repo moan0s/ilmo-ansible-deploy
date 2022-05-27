@@ -1,0 +1,34 @@
+[ilmo]
+instance_name={{ ilmo_instance_name }}
+url=https://{{ ilmo_domain }}
+
+[django]
+secret="{{ ilmo_django_secret }}"
+debug={{ ilmo_debug }}
+
+[database]
+backend=postgresql
+name= {{ ilmo_postgres_db }}
+user= {{ ilmo_postgres_user }}
+password= {{ ilmo_postgres_password }}
+host= {{ ilmo_postgres_host }}
+
+[locations]
+static={{ ilmo_base_path}}/static
+
+[mail]
+; See config file documentation for more options
+; from=ilmo@example.com
+; host=127.0.0.1
+; user=ilmo
+; password=foobar
+; port=587
+
+[security]
+; See https://securitytxt.org/ for reference
+;Contact=
+;Expires=
+;Encryption=
+;Preferred-Languages=
+;Scope=
+;Policy=

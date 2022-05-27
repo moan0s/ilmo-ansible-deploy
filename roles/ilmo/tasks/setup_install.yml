@@ -28,13 +28,23 @@
     - {path: "{{ ilmo_data_path }}", when: true}
   when: "item.when|bool"
 
-- name: Ensure ilmo config installed
+- name: Ensure ilmo config for sqlite3 is installed
   template:
-    src: "{{ role_path }}/templates/ilmo.cfg.j2"
+    src: "{{ role_path }}/templates/ilmo_sqlite.cfg.j2"
     dest: "{{ ilmo_config_path }}/ilmo.cfg"
     mode: 0644
     owner: "{{ ilmo_user }}"
     group: "{{ ilmo_group }}"
+  when: ilmo_database_backend == "sqlite3"
+
+- name: Ensure ilmo config for postgresql installed
+  template:
+    src: "{{ role_path }}/templates/ilmo_postgres.cfg.j2"
+    dest: "{{ ilmo_config_path }}/ilmo.cfg"
+    mode: 0644
+    owner: "{{ ilmo_user }}"
+    group: "{{ ilmo_group }}"
+  when: ilmo_database_backend == "postgresql"
 
 
 - name: Ensure ilmo service installed
@@ -55,7 +65,7 @@
 
 - name: Install gunicorn and wheel in virtualenv
   pip:
-    name: ["gunicorn", "wheel"]
+    name: ["gunicorn", "wheel", "psycopg2"]
     virtualenv: "{{ ilmo_venv_path }}"
     virtualenv_command: "{{ ilmo_venv_command }}"
   become: yes

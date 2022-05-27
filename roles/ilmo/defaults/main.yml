@@ -17,3 +17,4 @@ ilmo_branch: main
 ilmo_debug: false
 
 ilmo_postgres_host: localhost
+ilmo_database_backend: sqlite3
