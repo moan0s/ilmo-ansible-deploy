@@ -14,13 +14,13 @@
   register: stopping_result
   when: "ilmo_web_service_stat.stat.exists|bool"
 
-- name: Ensure matrix-bot-matrix-reminder-bot.service doesn't exist
+- name: Ensure ilmo service doesn't exist
   file:
     path: "{{ ilmo_systemd_path }}/{{ ilmo_web_service_name }}"
     state: absent
   when: "ilmo_web_service_stat.stat.exists|bool"
 
-- name: Ensure systemd reloaded after matrix-bot-matrix-reminder-bot.service removal
+- name: Ensure systemd reloaded after ilmo removal
   service:
     daemon_reload: true
   when: "ilmo_web_service_stat.stat.exists|bool"
