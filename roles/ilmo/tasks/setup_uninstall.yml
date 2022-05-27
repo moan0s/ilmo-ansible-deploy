@@ -2,35 +2,36 @@
 
 - name: Check existence of ilmo service
   stat:
-    path: "{{ matrix_systemd_path }}/matrix-bot-matrix-reminder-bot.service"
-  register: matrix_bot_matrix_reminder_bot_service_stat
+    path: "{{ ilmo_systemd_path }}/{{ ilmo_web_service_name }}"
+  register: ilmo_web_service_stat
 
-- name: Ensure matrix-matrix-reminder-bot is stopped
+- name: Ensure ilmo is stopped
   service:
-    name: matrix-bot-matrix-reminder-bot
+    name: "{{ ilmo_web_service_name }}"
     state: stopped
     enabled: false
     daemon_reload: true
   register: stopping_result
-  when: "matrix_bot_matrix_reminder_bot_service_stat.stat.exists|bool"
+  when: "ilmo_web_service_stat.stat.exists|bool"
 
 - name: Ensure matrix-bot-matrix-reminder-bot.service doesn't exist
   file:
-    path: "{{ matrix_systemd_path }}/matrix-bot-matrix-reminder-bot.service"
+    path: "{{ ilmo_systemd_path }}/{{ ilmo_web_service_name }}"
     state: absent
-  when: "matrix_bot_matrix_reminder_bot_service_stat.stat.exists|bool"
+  when: "ilmo_web_service_stat.stat.exists|bool"
 
 - name: Ensure systemd reloaded after matrix-bot-matrix-reminder-bot.service removal
   service:
     daemon_reload: true
-  when: "matrix_bot_matrix_reminder_bot_service_stat.stat.exists|bool"
+  when: "ilmo_web_service_stat.stat.exists|bool"
 
-- name: Ensure Matrix matrix-reminder-bot paths don't exist
+- name: Ensure ilmo base path doesn't exist
   file:
-    path: "{{ matrix_bot_matrix_reminder_bot_base_path }}"
+    path: "{{ ilmo_base_path }}"
     state: absent
 
-- name: Ensure matrix-reminder-bot Docker image doesn't exist
-  docker_image:
-    name: "{{ matrix_bot_matrix_reminder_bot_docker_image }}"
+- name: Ensure ilmo config doesn't exist
+  file:
+    path: "{{ ilmo_config_path }}"
     state: absent
+

@@ -31,7 +31,7 @@
 - name: Ensure ilmo config for sqlite3 is installed
   template:
     src: "{{ role_path }}/templates/ilmo_sqlite.cfg.j2"
-    dest: "{{ ilmo_config_path }}/ilmo.cfg"
+    dest: "{{ ilmo_config_file }}"
     mode: 0644
     owner: "{{ ilmo_user }}"
     group: "{{ ilmo_group }}"
@@ -40,7 +40,7 @@
 - name: Ensure ilmo config for postgresql installed
   template:
     src: "{{ role_path }}/templates/ilmo_postgres.cfg.j2"
-    dest: "{{ ilmo_config_path }}/ilmo.cfg"
+    dest: "{{ ilmo_config_file }}"
     mode: 0644
     owner: "{{ ilmo_user }}"
     group: "{{ ilmo_group }}"

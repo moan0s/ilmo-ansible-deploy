@@ -6,6 +6,7 @@ After=network.target
 User={{ ilmo_user }}
 Group= {{ ilmo_group }}
 Environment="VIRTUAL_ENV={{ ilmo_venv_path }}"
+Environment="ILMO_CONFIG_FILE={{ ilmo_config_file }}"
 Environment="PATH={{ ilmo_venv_path }}/bin:/usr/local/bin:/usr/bin:/bin"
 ExecStart={{ ilmo_venv_path }}/bin/gunicorn ilmo.wsgi \
                       --name ilmo-{{ ilmo_instance_name_normalized}}  --workers 5 \
