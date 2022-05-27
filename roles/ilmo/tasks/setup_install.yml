@@ -95,6 +95,7 @@
   become: yes
   become_user: "{{ ilmo_user }}"
   notify:
+    - Delete static files
     - Run database migration
     - Run static file compilation
 
@@ -102,7 +103,7 @@
 
 - name: Enable/Start web systemd service
   systemd:
-    name: "{{ ilmo_web_service_name }}.service"
+    name: "{{ ilmo_web_service_name }}"
     daemon_reload: yes
     enabled: yes
     state: started

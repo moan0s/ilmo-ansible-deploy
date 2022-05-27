@@ -8,6 +8,12 @@
   become: yes
   become_user: "{{ ilmo_user }}"
 
+- name: Delete static files
+  file:
+    state: absent
+    path: "{{ ilmo_static_path }}"
+
+
 - name: Run static file compilation
   command: "{{ ilmo_venv_path }}/bin/python {{ ilmo_base_path }}/ILMO/src/manage.py collectstatic"
   args:
