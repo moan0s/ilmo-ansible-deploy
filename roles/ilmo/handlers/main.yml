@@ -1,0 +1,24 @@
+---
+- name: Run database migration
+  command: "{{ ilmo_venv_path }}/bin/python {{ ilmo_base_path }}/ILMO/src/manage.py migrate"
+  args:
+    chdir: "{{ ilmo_base_path }}"
+  environment:
+    ILMO_CONFIG_FILE: "{{ ilmo_config_path }}/ilmo.cfg"
+  become: yes
+  become_user: "{{ ilmo_user }}"
+
+- name: Run static file compilation
+  command: "{{ ilmo_venv_path }}/bin/python {{ ilmo_base_path }}/ILMO/src/manage.py collectstatic"
+  args:
+    chdir: "{{ ilmo_base_path }}"
+  environment:
+    PRETIX_CONFIG_FILE: "{{ ilmo_config_path }}/ilmo.cfg"
+  become: yes
+  become_user: "{{ ilmo_user }}"
+
+- name: Restart web systemd service
+  systemd:
+    name: "{{ ilmo_web_service_name }}.service"
+    daemon_reload: yes
+    state: restarted

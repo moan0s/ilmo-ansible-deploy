@@ -1,14 +1,20 @@
 [ilmo]
-instance_name=My library
-url=https://ilmo.example.com
+instance_name={{ ilmo_instance_name }}
+url=https://{{ ilmo_domain }}
+
+[django]
+secret="{ {ilmo_django_secret }}"
+debug={{ ilmo_debug }}
 
 [database]
 backend=postgresql
-name=ilmo
-user=ilmo
+name= {{ ilmo_postgres_db }}
+user= {{ ilmo_postgres_user }}
+password= {{ ilmo_postgres_password }}
+host= {{ ilmo_postgres_host }}
 
 [locations]
-static=/var/ilmo/static
+static={{ ilmo_base_path}}/static
 
 [mail]
 ; See config file documentation for more options

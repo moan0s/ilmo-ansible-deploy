@@ -14,3 +14,6 @@ ilmo_systemd_path: "/etc/systemd/system"
 
 ilmo_port: 4566
 ilmo_branch: main
+ilmo_debug: false
+
+ilmo_postgres_host: localhost
