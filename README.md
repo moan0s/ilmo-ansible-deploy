@@ -1,3 +1,5 @@
+**DEPRECATED: Use [ansible-role-ilmo](https://github.com/moan0s/ansible-role-ilmo) instead!**
+
 # ILMO - Intelligent Library Management Online
 
 ILMO is a webapp to manage a library, especially books, other material, users, emails and opening hours.
